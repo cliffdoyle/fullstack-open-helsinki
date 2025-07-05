@@ -11,6 +11,8 @@ function Statistics({props}){
     return(
       <div>
   
+       <table>
+        <tbody>
         <h1>Statistics</h1>
       <StatisticLine text="good" value ={good} />
       <StatisticLine text="neutral" value ={neutral} />
@@ -18,6 +20,9 @@ function Statistics({props}){
       <StatisticLine text="all" value ={all} />
       <StatisticLine text="average" value ={average} />
       <StatisticLine text="positiveFeedback" value ={positiveFeedback}/>
+      </tbody>
+      </table>
+      
         </div>
   
     )
@@ -40,9 +45,12 @@ const StatisticLine=({text,value})=>{
   console.log(text, value)
   return (
     <div>
-      <h3>{text} {value}</h3>
-
-
+     <tr>
+      <td><h3>{text}</h3> </td>
+      <td>{value}</td> 
+      </tr>    
+    
+     
     </div>
   )
 
