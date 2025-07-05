@@ -11,9 +11,9 @@ function Statistics({props}){
     return(
       <div>
   
+        <h1>Statistics</h1>
        <table>
         <tbody>
-        <h1>Statistics</h1>
       <StatisticLine text="good" value ={good} />
       <StatisticLine text="neutral" value ={neutral} />
       <StatisticLine text="bad" value ={bad} />
@@ -55,20 +55,31 @@ const StatisticLine=({text,value})=>{
   )
 
 }
-const Button=({stats:{good,bad,neutral,anecdotes}, setters:{setGood,setBad,setNeutral,setSelected}})=>{
-
+const Button=({stats:{good,bad,neutral,anecdotes,selected,allvotes}, setters:{setGood,setBad,setNeutral,setSelected,setAllvotes}})=>{
+ 
   const handleAnecdote=()=>{
     const randIndex=Math.floor(Math.random()*anecdotes.length)
     setSelected(randIndex)
 
   }
 
+  const handleVote=()=>{
+    const updatedVotes=[...allvotes]
+    updatedVotes[selected]+=1
+    setAllvotes(updatedVotes)
+  }
+
+  console.log('votes in Button component',allvotes)
+
   return (
     <div>
-      <button onClick={()=>setGood(good+1)}>Good Button</button>
-      <button onClick={()=>setNeutral(neutral+1)}>Neutral Button</button>
-      <button onClick={()=>setBad(bad+1)}>Bad Button</button>
-      <button onClick={handleAnecdote}>Display Anecdote</button>
+      <button onClick={()=>setGood(good+1)}>Good Button</button><br/>
+      <button onClick={()=>setNeutral(neutral+1)}>Neutral Button</button><br/>
+      <button onClick={()=>setBad(bad+1)}>Bad Button</button><br/>
+      <button onClick={handleAnecdote}>next necdote</button>
+      <button onClick={handleVote}>vote</button>
+
+    
 
     </div>
   )
@@ -96,10 +107,14 @@ function App() {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [vote, setVote]=useState(0)
+  const [allvotes,setAllvotes]=useState(Array(anecdotes.length).fill(0))
 
   const all=good+bad+neutral
   const average=(good*1 + neutral*0 + bad*-1)/all
   const positiveFeedback=(good/all)*100 
+
+ 
 
   //Generating random index
   // selected = Math.floor(Math.random()*anecdotes.length)
@@ -107,13 +122,20 @@ function App() {
   //Access a random anecdote
   // let displaySelected = anecdotes[selected]
   console.log('Selected',anecdotes[selected])
+  const maxVotes=Math.max(...allvotes)
+  const maxIndex=allvotes.indexOf(maxVotes)
+  const anecdoteWithMaxVotes=anecdotes[maxIndex]
   return (
     <div>
       <div>
       <h1>Give Feedback</h1>
-      <Button stats={{good,neutral,bad,selected,anecdotes}} setters={{setGood,setBad,setNeutral,setSelected}}/>
+      <Button stats={{good,neutral,bad,selected,anecdotes,vote,allvotes}} setters={{setGood,setBad,setNeutral,setSelected,setVote,setAllvotes}}/>
       <Statistics props={{good,neutral,bad,all,average,positiveFeedback}}/>
       <h1>{anecdotes[selected]}</h1>
+      <h4>has {allvotes[selected]}votes</h4>
+
+        <h1>Anecdote with most votes</h1>
+        <p>{anecdoteWithMaxVotes}</p>
       
       </div>
     </div>
