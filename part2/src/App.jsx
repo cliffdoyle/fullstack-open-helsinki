@@ -4,38 +4,33 @@ const Header=({name})=>{
   return (
     <>
     <h1>
-      {name}
+    {name}
     </h1>
     </>
   )
 }
 
-// const Part=(props)=>{
-
-//   return (
-//     <>
-//     <p>
-//       {props.part} {props.exercise}
-//     </p>
-//     </>
-//   )
-// }
 
 const Content=({parts})=>{
   console.log('content props:',parts)
-  console.log('content:',parts[0].name)
 
   return (
     <div>
-      {parts.map((part)=>
+      {parts.map((part,i)=>(
+        <div key={i}>
+        <Header name={part.name}/>
+       
+        {part.parts.map((val,j)=>(
+          <p key={j}>
+          {val.name} {val.exercises}
+          
+          </p>
+      ))} 
+      <Total exercises={part.parts}/>
     
-      <p key={part.id}>
-        {part.name} {part.exercises}
-        </p>
-     
-     
-
-      )}
+    </div>
+      
+      ))}
     </div>
   )
 }
@@ -47,7 +42,7 @@ const Total=({exercises})=>{
 
   return (
     <div>
-      <p>Total exercises: {total}</p>
+      <h3>Total exercises: {total}</h3>
     </div>
   )
   
@@ -59,47 +54,60 @@ const Course = ({course})=>{
 
   return(
     <div>
-      <Header name={course.name}/>
-      <Content parts={course.parts}/>
-      <Total exercises={course.parts}/>
-
+      <Content parts={course}/>
+      
     </div>
   )
 }
 
 
 const App=()=>{
-  const course = {
-    id:1,
-    name:'Half Stack application development',
-
-   parts: [
+  const courses = [
     {
-    name:'Fundamentals of React',
-    exercises: 10,
-    id:1
-    },
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
     {
-      name:'Using props to pass data',
-      exercises:7,
-      id:2
-
-    },
-    {
-    name:'State of a component',
-    exercises:14,
-    id:3
-    },
-    {
-      name: 'Redux',
-      exercises:11,
-      id:4
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
     }
-    
-  ] 
-}
+  ]
 
-  return <Course course={course}/>
+  return <Course course={courses}/>
     
 }
 
