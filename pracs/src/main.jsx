@@ -1,5 +1,8 @@
+
 import ReactDom from 'react-dom/client'
+
 import App from './App.jsx'
+
 
 const notes = [
   {
@@ -19,6 +22,5 @@ const notes = [
   }
 ]
 
-
 const root=ReactDom.createRoot(document.getElementById('root'))
-root.render(<App prop={notes}/>)
+root.render(<App notes={notes}/>)

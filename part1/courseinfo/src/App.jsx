@@ -1,5 +1,6 @@
 
 const Header=(props)=>{
+  console.log('Header',props)
 
   return (
     <>
@@ -49,9 +50,9 @@ const Total=(props)=>{
 
 
 const App=()=>{
-  const course = 'Half Stack application development'
-
-  const parts=[
+  const course = {
+    name:'Half Stack application development',
+    parts: [
     {
     name:'Fundamentals of React',
     exercises: 10
@@ -69,11 +70,14 @@ const App=()=>{
 
   ] 
 
+  }
+ 
+
   return (
     <>
-    <Header course={course}/>
-    <Content part={parts}/>
-    <Total exercise={parts}/>
+    <Header course={course.name}/>
+    <Content part={course.parts}/>
+    <Total exercise={course.parts}/>
     </>
   )
 }
