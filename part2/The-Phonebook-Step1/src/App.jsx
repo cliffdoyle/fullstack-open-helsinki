@@ -1,5 +1,82 @@
 import { useState } from 'react'
 
+const SearchFilter=({filterz,person})=>{
+  console.log('filtered names:',filterz)
+   console.log('unfiltered names:',person)
+
+  if(filterz && filterz.length>0){
+return (
+      <div>
+        <h2>Numbers</h2>
+          <ul>
+            {filterz.map(val=>
+            <li key={val.id}>{val.name} {val.number}</li>
+            )}
+            </ul>
+            </div>
+    )
+  }
+  return (
+    <div>
+        <AllPeople person={person}/>
+    </div>
+  )
+
+}
+
+const Form=({submit,namey,numpy,namzy,numbi})=>{
+
+  return (
+    <div>
+      <h2>Add New</h2>
+        <form  onSubmit={submit}>
+        <div>
+          name: <input value={namzy} onChange={namey}/>
+        </div>
+        <div>
+          number:<input value={numbi} onChange={numpy}/>
+        </div>
+
+        <div>
+          <button type='submit'>AddDetails</button>
+        </div>
+        </form>
+    </div>
+  )
+
+}
+
+const AllPeople=({person})=>{
+
+  return (
+    <div> 
+        <h2>Numbers</h2>
+        {person.map((val)=>
+        <ul key={val.id}>
+          <DisplaySinglePerson  name={val.name} num={val.number}/>
+          </ul>
+        )}
+
+    </div>
+  )
+
+}
+
+const DisplaySinglePerson=({id,name, num})=>{
+  return (
+    <div>
+      <li>
+        {name} {num}
+        </li>
+
+    </div>
+  )
+
+}
+
+
+
+
 
 function App() {
   const [persons, setPersons] = useState([
@@ -51,7 +128,6 @@ function App() {
   }
 
   const addFilteredName=(event)=>{
-    setFilteredName('')
     setFilteredName(event.target.value)
   }
 
@@ -66,38 +142,9 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Show Filtered Results: <input type="text" value={filteredName} onChange={addFilteredName}/>
-      </div>
-      <form  onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={addName}/>
-        </div>
-        <div>
-          number:<input value={newNumber} onChange={addNumber}/>
-        </div>
-
-        <div>
-          <button type='submit'>AddDetails</button>
-        </div>
-        </form>
-        <h2>Filtered Search Result</h2>
-        <ul>
-          {filterResult.map(val=>
-          <li key={val.id}>{val.name} {val.number}</li>
-          
-
-          )}
-          </ul>
-          <ul>
-              <h2>Un-filtered Search Result</h2>
-        {persons.map((val)=>
-        <div key={val.id}>
-          <li>{val.name} {val.number}</li>
-
-          </div>)}
-        </ul>
-     
+        Search: <input type="text" value={filteredName} onChange={addFilteredName}/>
+          <Form submit={handleSubmit} namey={addName} numpy={addNumber} namzy={newName} numbi={newNumber}/>
+          <SearchFilter filterz={filterResult} person={persons}/>
     </div>
   )
 }
