@@ -9,18 +9,13 @@
 		{Name: "kelly",Species: "Dog"},
 	]
 
-	const orders= [
-		{amount:250},
-		{amount:340},
-		{amount:700},
-	]
+	const obj={
+		Name:"Tooom", Species: "Mouse"
+	}
 
-	const obj=[1,2,3,4,4,2,8,9]
-	const sum=orders.reduce((sum,acc)=>{
-		console.log("values :",sum,acc)
-		return sum+=acc.amount
-	},0)
-	console.log('Sum by reduce:',sum)
+	const animalExist=animal.some(val=>val.Name===obj.Name)
+	console.log(animalExist)
+
 
 
 

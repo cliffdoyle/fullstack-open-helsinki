@@ -16,10 +16,25 @@ function App() {
       name:newName,
       id: persons.length+1
     }
+    // for (let i=0;i<persons.length;i++){
+    //   // if (persons[i].name==newNamey.name){
+    //   //   alert(`${newNamey.name}is already added to phonebook`)
+    //   //   return
+    //   // }
+    // }
+    // const result=persons.filter(val=>
+    //   val.name !=newNamey.name
+    // )
+    const nameExist=persons.some(val=>val.name===newNamey.name)
+    if (nameExist){
+      alert(`${newNamey.name} is already added to phonebook`)
+      return
+    }
     setPersons(persons.concat(newNamey))
     setNewName('')
   }
   const addName=(event)=>{
+
     setNewName(event.target.value)
   }
 
