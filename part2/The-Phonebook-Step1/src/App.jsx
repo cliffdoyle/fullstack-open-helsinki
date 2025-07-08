@@ -28,7 +28,6 @@ const Form=({submit,namey,numpy,namzy,numbi})=>{
 
   return (
     <div>
-      <h2>Add New</h2>
         <form  onSubmit={submit}>
         <div>
           name: <input value={namzy} onChange={namey}/>
@@ -50,7 +49,6 @@ const AllPeople=({person})=>{
 
   return (
     <div> 
-        <h2>Numbers</h2>
         {person.map((val)=>
         <ul key={val.id}>
           <DisplaySinglePerson  name={val.name} num={val.number}/>
@@ -143,7 +141,9 @@ function App() {
     <div>
       <h2>Phonebook</h2>
         Search: <input type="text" value={filteredName} onChange={addFilteredName}/>
+          <h2>Add New</h2>
           <Form submit={handleSubmit} namey={addName} numpy={addNumber} namzy={newName} numbi={newNumber}/>
+           <h2>Numbers</h2>
           <SearchFilter filterz={filterResult} person={persons}/>
     </div>
   )
