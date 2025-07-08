@@ -3,10 +3,14 @@ import { useState } from 'react'
 
 function App() {
   const [persons, setPersons] = useState([
-    {name:'Arto Hellas',id:1,number:+254703836264}
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
   const [newName, setNewName]=useState('')
   const [newNumber,setNewNumber]=useState()
+  const [filteredName, setFilteredName]=useState('')
 
   
   
@@ -46,13 +50,25 @@ function App() {
     setNewNumber(event.target.value)
   }
 
-  console.log('new name:',newName)
-  console.log('persons array:',persons)
+  const addFilteredName=(event)=>{
+    setFilteredName('')
+    setFilteredName(event.target.value)
+  }
+
+  // console.log('new name:',newName)
+  // console.log('persons array:',persons)
+
+
+  const filterResult=filteredName ? persons.filter(val=>val.name.toLowerCase().includes(filteredName.toLocaleLowerCase())):[]
+  console.log('filtered names:',filteredName)
   
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        Show Filtered Results: <input type="text" value={filteredName} onChange={addFilteredName}/>
+      </div>
       <form  onSubmit={handleSubmit}>
         <div>
           name: <input value={newName} onChange={addName}/>
@@ -65,8 +81,16 @@ function App() {
           <button type='submit'>AddDetails</button>
         </div>
         </form>
-        <h2>Numbers</h2>
+        <h2>Filtered Search Result</h2>
         <ul>
+          {filterResult.map(val=>
+          <li key={val.id}>{val.name} {val.number}</li>
+          
+
+          )}
+          </ul>
+          <ul>
+              <h2>Un-filtered Search Result</h2>
         {persons.map((val)=>
         <div key={val.id}>
           <li>{val.name} {val.number}</li>
