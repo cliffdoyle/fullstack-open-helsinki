@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const SearchFilter=({filterz,person})=>{
-  console.log('filtered names:',filterz)
-   console.log('unfiltered names:',person)
+  // console.log('filtered names:',filterz)
+  //  console.log('unfiltered names:',person)
 
   if(filterz && filterz.length>0){
 return (
@@ -80,13 +80,13 @@ const DisplaySinglePerson=({id,name, num})=>{
 function App() {
   const [persons, setPersons] = useState([])
   const [newName, setNewName]=useState('')
-  const [newNumber,setNewNumber]=useState()
+  const [newNumber,setNewNumber]=useState('')
   const [filteredName, setFilteredName]=useState('')
 
 
   useEffect(()=>{
     axios
-    .get('http://localhost:3001/persons')
+    .get('http://localhost:3002/persons')
     .then(resp=>{
       const notes=resp.data
       setPersons(notes)
@@ -101,7 +101,7 @@ function App() {
 
     const newNamey={
       name:newName,
-      id: persons.length+1,
+      // id: persons.length+1,
       number:newNumber
     }
     // for (let i=0;i<persons.length;i++){
@@ -118,9 +118,15 @@ function App() {
       alert(`${newNamey.name} is already added to phonebook`)
       return
     }
-    setPersons(persons.concat(newNamey))
-    setNewName('')
-    setNewNumber('')
+    axios
+    .post('http://localhost:3002/persons',newNamey)
+    .then(resp=>{
+      console.log('data response from post:',resp)
+      setPersons(persons.concat(resp.data))
+
+      setNewName('')
+      setNewNumber('')
+    })
 
   }
   const addName=(event)=>{
@@ -138,7 +144,7 @@ function App() {
 
 
   const filterResult=filteredName ? persons.filter(val=>val.name.toLowerCase().includes(filteredName.toLocaleLowerCase())):[]
-  console.log('filtered names:',filteredName)
+  // console.log('filtered names:',filteredName)
   
 
   return (
