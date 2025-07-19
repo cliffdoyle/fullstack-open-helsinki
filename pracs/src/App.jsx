@@ -1,6 +1,22 @@
 import Note from './components/Note'
 import { useState,useEffect } from 'react'
 import axios from 'axios'
+import noteService from './services/notes'
+import notes from './services/notes'
+
+
+
+// const Note = ({note,toggleImportanceof})=>{
+//   const label = note.important ? 'make not important':'make important'
+
+//   return (
+//     <li>
+//       {note.content}
+//       <button onClick={toggleImportanceof}>{label}</button>
+//     </li>
+//   )
+
+// }
 
 
 function App() {
@@ -12,14 +28,26 @@ function App() {
 
     useEffect (()=>{
     console.log('effect')
-    axios
-    .get('http://localhost:3001/notes')
+
+    noteService.getAll()
     .then(response =>{
       console.log('promise fulfilled')
       setNotes(response.data)
     })
   },[])
   console.log('render:',notesie.length,'notes')
+
+  const toggleImportanceof=(id)=>{
+    console.log(`importance of ${id} needs to be toggled`)
+    const note=notesie.find(n=>n.id==id)
+    const changedNote={...note, important:!note.important}
+    noteService.update(id,changedNote)
+
+    .then(resp=>{
+      setNotes(notesie.map(note=>note.id !==id?note : resp.data))
+    })
+    console.log('note importance',note)
+  }
 
 
     const addNote=(e)=>{
@@ -30,10 +58,23 @@ function App() {
       const noteObj={
         content: newNote,
         important: Math.random()<0.5,
-        id:String(notesie.length+1)
+        // id:String(notesie.length+1)
       }
-      setNotes(notesie.concat(noteObj))
-      setNewNote('')
+
+     noteService
+     .create(noteObj)
+      .then(resp=>{
+        console.log("hey",resp)
+        setNotes(notesie.concat(resp.data))
+        setNewNote('')
+      })
+      .catch(error=>{
+          alert(
+        `the note '${note.content}' was already deleted from server`
+      )
+      setNotes(notesie.filter(n=>n.id !=id))
+      });
+      
     
     }
 
@@ -44,7 +85,7 @@ function App() {
 
     const notesToShow=showAll ? notesie : notesie.filter((note)=>note.important===true)
 
-console.log('important notes to display:',notesToShow);
+// console.log('important notes to display:',notesToShow);
 
   return (
     <>
@@ -57,7 +98,7 @@ console.log('important notes to display:',notesToShow);
     </div>
     {notesToShow.map((val)=>
     <ul key={val.id}>
-    <Note note={val}/>
+    <Note note={val} toggleImportance={()=>toggleImportanceof(val.id)}/>
     </ul>
     )}
 

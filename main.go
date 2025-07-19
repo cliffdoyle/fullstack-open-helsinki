@@ -49,14 +49,42 @@ import "fmt"
 
 
 
+func fact(n int)int{
+	if n ==0 || n ==1{
+		return 0
+	}
+	count:=0
+
+	fact:=1
+	ans:=[]int{}
+
+	for i:=2;fact<n;i++{
+
+		fact*=i
+		ans = append(ans, fact)
+			count++
+			if fact==n{
+				return  count
+			}
+	}
+	fmt.Println(ans)
+
+	return count
+}
+
+
+
 func main(){
-	arr1:=[]int{1,3,8,9,6}
-	arr2:=[]int{}
+	// arr1:=[]int{1,3,8,9,6}
+	// arr2:=[]int{}
 
-	arr2=append(arr1[0:2],arr1[3:]...)
+	// arr2=append(arr1[0:2],arr1[3:]...)
 
-	fmt.Println("array2",arr2)
-	fmt.Println("array1",arr1)
+	// fmt.Println("array2",arr2)
+	// fmt.Println("array1",arr1)
+
+	n:=13
+	fmt.Println(fact(n))
 }
 
 
