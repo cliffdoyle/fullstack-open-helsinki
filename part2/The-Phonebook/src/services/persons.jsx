@@ -17,4 +17,9 @@ const create=(newObj)=>{
     })
 }
 
-export default {getAll,create}
+const deleted=(id)=>{
+    return axios.delete(`${baseUrl}/${id}`).then(resp=>resp.data)
+
+}
+
+export default {getAll,create,deleted}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import services from './services/persons'
 
-const SearchFilter=({filterz,person})=>{
+const SearchFilter=({filterz,person,delety})=>{
   // console.log('filtered names:',filterz)
   //  console.log('unfiltered names:',person)
 
@@ -11,7 +11,11 @@ return (
         <h2>Numbers</h2>
           <ul>
             {filterz.map(val=>
-            <li key={val.id}>{val.name} {val.number}</li>
+            <li key={val.id}>
+              {val.name} {val.number}
+              <button onClick={()=>delety(val.id)}>remove</button>
+
+              </li>
             )}
             </ul>
             </div>
@@ -19,7 +23,7 @@ return (
   }
   return (
     <div>
-        <AllPeople person={person}/>
+        <AllPeople person={person} del={delety}/>
     </div>
   )
 
@@ -46,13 +50,14 @@ const Form=({submit,namey,numpy,namzy,numbi})=>{
 
 }
 
-const AllPeople=({person})=>{
+const AllPeople=({person,del})=>{
 
   return (
     <div> 
         {person.map((val)=>
         <ul key={val.id}>
-          <DisplaySinglePerson  name={val.name} num={val.number}/>
+          <DisplaySinglePerson  name={val.name} num={val.number} id={val.id}/>
+          <button onClick={()=>del(val.id)}>remove</button>
           </ul>
         )}
 
@@ -62,6 +67,7 @@ const AllPeople=({person})=>{
 }
 
 const DisplaySinglePerson=({id,name, num})=>{
+  
   return (
     <div>
       <li>
@@ -99,6 +105,22 @@ function App() {
     
   },[])
 
+ 
+   const deleteButton=(id)=>{
+      console.log(`person with this ${id} will be deleted`)
+      const personToDelete=persons.find(n=>n.id==id)
+      // const deletedperson={...persons}
+      if(window.confirm(`Delete ${personToDelete.name}`)){
+        services.deleted(id)
+        .then(()=>setPersons(persons.filter(p=>p.id !==id)))
+
+      }
+  
+      // .then(resp=>{
+      //   setNotes(notesie.map(note=>note.id !==id?note : resp.data))
+      // })
+      // console.log('note importance',note)
+    }
  
   
   
@@ -165,7 +187,7 @@ function App() {
           <h2>Add New</h2>
           <Form submit={handleSubmit} namey={addName} numpy={addNumber} namzy={newName} numbi={newNumber}/>
            <h2>Numbers</h2>
-          <SearchFilter filterz={filterResult} person={persons}/>
+          <SearchFilter filterz={filterResult} person={persons}  delety={deleteButton}/>
     </div>
   )
 }
