@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import services from './services/persons'
 
 const SearchFilter=({filterz,person})=>{
   // console.log('filtered names:',filterz)
@@ -85,12 +85,18 @@ function App() {
 
 
   useEffect(()=>{
-    axios
-    .get('http://localhost:3002/persons')
-    .then(resp=>{
-      const notes=resp.data
-      setPersons(notes)
+    // axios
+    // .get('http://localhost:3002/persons')
+    // .then(resp=>{
+    //   const notes=resp.data
+    //   setPersons(notes)
+    // })
+    services
+    .getAll()
+    .then(data=>{
+      setPersons(data)
     })
+    
   },[])
 
  
@@ -118,14 +124,19 @@ function App() {
       alert(`${newNamey.name} is already added to phonebook`)
       return
     }
-    axios
-    .post('http://localhost:3002/persons',newNamey)
+    // axios
+    // .post('http://localhost:3002/persons',newNamey)
+    // .then(resp=>{
+    //   console.log('data response from post:',resp)
+    //   setPersons(persons.concat(resp.data))
+    // })
+    services
+    .create(newNamey)
     .then(resp=>{
-      console.log('data response from post:',resp)
-      setPersons(persons.concat(resp.data))
-
-      setNewName('')
-      setNewNumber('')
+      setPersons(persons.concat(resp))
+      
+           setNewName('')
+           setNewNumber('')
     })
 
   }
