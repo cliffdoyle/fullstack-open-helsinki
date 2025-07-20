@@ -22,4 +22,11 @@ const deleted=(id)=>{
 
 }
 
-export default {getAll,create,deleted}
+const update=(id,newObj)=>{
+    const request=axios.put(`${baseUrl}/${id}`,newObj)
+    return request.then(resp=>{
+        return resp.data
+    })
+}
+
+export default {getAll,create,deleted,update}

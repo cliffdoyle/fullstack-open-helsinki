@@ -42,7 +42,9 @@ const Form=({submit,namey,numpy,namzy,numbi})=>{
         </div>
 
         <div>
-          <button type='submit'>AddDetails</button>
+       
+            <button type='submit'>AddDetails</button>
+        
         </div>
         </form>
     </div>
@@ -56,8 +58,8 @@ const AllPeople=({person,del})=>{
     <div> 
         {person.map((val)=>
         <ul key={val.id}>
-          <DisplaySinglePerson  name={val.name} num={val.number} id={val.id}/>
-          <button onClick={()=>del(val.id)}>remove</button>
+          <DisplaySinglePerson  name={val.name} num={val.number} id={val.id} deln={del}/>
+         
           </ul>
         )}
 
@@ -66,12 +68,12 @@ const AllPeople=({person,del})=>{
 
 }
 
-const DisplaySinglePerson=({id,name, num})=>{
+const DisplaySinglePerson=({id,name, num,deln})=>{
   
   return (
     <div>
       <li>
-        {name} {num}
+        {name} {num}  <button onClick={()=>deln(id)}>remove</button>
         </li>
 
     </div>
@@ -121,6 +123,8 @@ function App() {
       // })
       // console.log('note importance',note)
     }
+
+    
  
   
   
@@ -142,16 +146,46 @@ function App() {
     //   val.name !=newNamey.name
     // )
     const nameExist=persons.some(val=>val.name===newNamey.name)
-    if (nameExist){
-      alert(`${newNamey.name} is already added to phonebook`)
-      return
-    }
+    // if (nameExist){
+    //   alert(`${newNamey.name} is already added to phonebook`)
+    //   return
+    // }
     // axios
     // .post('http://localhost:3002/persons',newNamey)
     // .then(resp=>{
     //   console.log('data response from post:',resp)
     //   setPersons(persons.concat(resp.data))
     // })
+
+
+    //Update number of an existing user
+    // if(window.confirm(`${nameExist} is already added to phonebook, replace the old number with a new one?`)){
+    //   services
+    //   .update(newNamey.name,newNamey)
+    //   .then(resp=>{
+    //     setPersons(persons.concat(resp))
+    //      setNewName('')
+    //        setNewNumber('')
+    //   })
+    // }
+
+    //changing number functionality
+    const existingPerson=persons.find(person=>person.name===newName)
+    const changedPersonObj={...existingPerson,number:newNumber}
+
+    if (existingPerson){
+       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+    services.update(existingPerson.id,changedPersonObj)
+    .then(resp=>{
+      setPersons(persons.map(p=>p.id===existingPerson.id ? resp:p))
+      setNewName('')
+      setNewNumber('')
+    })
+  }
+  return
+    }
+
+    //post creatinon
     services
     .create(newNamey)
     .then(resp=>{
@@ -162,6 +196,18 @@ function App() {
     })
 
   }
+
+//   const updateNumber=(id)=>{
+//     console.log('updating number function')
+//     const person=persons.find(n=>n.id==id)
+//     const changedPersonObj={...person,number:newNumber}
+//      if(window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)){
+//     services.update(id,changedPersonObj)
+//     .then(resp=>{
+//       setPersons(resp)
+//     })
+//   }
+// }
   const addName=(event)=>{
 
     setNewName(event.target.value)
@@ -185,7 +231,7 @@ function App() {
       <h2>Phonebook</h2>
         Search: <input type="text" value={filteredName} onChange={addFilteredName}/>
           <h2>Add New</h2>
-          <Form submit={handleSubmit} namey={addName} numpy={addNumber} namzy={newName} numbi={newNumber}/>
+          <Form submit={handleSubmit}  namey={addName} numpy={addNumber} namzy={newName} numbi={newNumber}/>
            <h2>Numbers</h2>
           <SearchFilter filterz={filterResult} person={persons}  delety={deleteButton}/>
     </div>
